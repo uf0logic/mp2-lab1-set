@@ -71,10 +71,10 @@ TSet& TSet::operator=(const TSet &s) {
 }
 
 TSet TSet::operator+(const TSet &s) {
-    if (MaxPower != s.MaxPower)
-        throw "Sets of different MaxPower cannot be unioned";
+    //if (MaxPower != s.MaxPower)
+    //    throw "Sets of different MaxPower cannot be unioned";     //lmao, but how???
 
-    TSet result(MaxPower);
+    TSet result(max(MaxPower, s.GetMaxPower()));
     result.BitField = BitField | s.BitField;
     return result;
     // Union of two sets
@@ -101,10 +101,10 @@ TSet TSet::operator-(const int Elem) {
 }
 
 TSet TSet::operator*(const TSet &s) {
-    if (MaxPower != s.MaxPower)
-        throw "Sets of different MaxPower cannot be intersected";
+    //if (MaxPower != s.MaxPower)
+    //    throw "Sets of different MaxPower cannot be intersected";
 
-    TSet result(MaxPower);
+    TSet result(max(MaxPower, s.GetMaxPower()));
     result.BitField = BitField & s.BitField;
     return result;
     // Intersection of two sets
