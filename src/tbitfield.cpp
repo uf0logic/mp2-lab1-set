@@ -185,10 +185,10 @@ TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 TBitField TBitField::operator~(void)
 {
     TBitField result(BitLen);
-    for (int i = 0; i < MemLen; i++) {
-        result.pMem[i] = ~pMem[i];
-        //if (!GetBit(i))             //Украл у Эмиля, который украл у Кости :)
-        //    result.SetBit(i);       //Капец, теперь всё переписывать. Ошибка обнаружена, так сказать
+    for (int i = 0; i < BitLen; i++) {
+        //result.pMem[i] = ~pMem[i];
+        if (!GetBit(i))             //Украл у Эмиля, который украл у Кости :)
+            result.SetBit(i);       //Капец, теперь всё переписывать. Ошибка обнаружена, так сказать
     }
 
     return result;
