@@ -132,35 +132,64 @@ TBitField& TBitField::operator=(const TBitField &bf)
     return *this;
 }
 
-TBitField TBitField::operator|(const TBitField &bf)
+//TBitField TBitField::operator|(const TBitField &bf)
+//{
+//    if (BitLen != bf.BitLen)
+//        throw "Bitfields of different lengths cannot be OR'ed";
+//
+//    TBitField result(BitLen);
+//    for (int i = 0; i < MemLen; i++)
+//        result.pMem[i] = pMem[i] | bf.pMem[i];
+//
+//    return result;
+//}
+
+TBitField TBitField::operator|(const TBitField& bf) // операция "или"
 {
-    if (BitLen != bf.BitLen)
-        throw "Bitfields of different lengths cannot be OR'ed";
-
-    TBitField result(BitLen);
-    for (int i = 0; i < MemLen; i++)
-        result.pMem[i] = pMem[i] | bf.pMem[i];
-
-    return result;
+    const int mn = min(BitLen, bf.BitLen);
+    TBitField tmp(1);
+    if (BitLen < bf.BitLen)
+        tmp = bf;
+    else
+        tmp = *this;
+    for (int i = 0; i < mn; ++i) {
+        if (GetBit(i) | bf.GetBit(i))
+            tmp.SetBit(i);
+    }
+    return tmp;
 }
 
-TBitField TBitField::operator&(const TBitField &bf)
+//TBitField TBitField::operator&(const TBitField &bf)
+//{
+//    if (BitLen != bf.BitLen)
+//        throw "Bitfields of different lengths cannot be AND'ed";
+//
+//    TBitField result(BitLen);
+//    for (int i = 0; i < MemLen; i++)
+//        result.pMem[i] = pMem[i] & bf.pMem[i];
+//
+//    return result;
+//}
+
+TBitField TBitField::operator&(const TBitField& bf) // операция "и"
 {
-    if (BitLen != bf.BitLen)
-        throw "Bitfields of different lengths cannot be AND'ed";
-
-    TBitField result(BitLen);
-    for (int i = 0; i < MemLen; i++)
-        result.pMem[i] = pMem[i] & bf.pMem[i];
-
-    return result;
+    const int mn = min(BitLen, bf.BitLen);
+    TBitField tmp(max(BitLen, bf.BitLen));
+    for (int i = 0; i < mn; ++i) {
+        if (GetBit(i) && bf.GetBit(i))
+            tmp.SetBit(i);
+    }
+    return tmp;
 }
 
 TBitField TBitField::operator~(void)
 {
     TBitField result(BitLen);
-    for (int i = 0; i < MemLen; i++)
+    for (int i = 0; i < MemLen; i++) {
         result.pMem[i] = ~pMem[i];
+        //if (!GetBit(i))             //Украл у Эмиля, который украл у Кости :)
+        //    result.SetBit(i);       //Капец, теперь всё переписывать. Ошибка обнаружена, так сказать
+    }
 
     return result;
 }
